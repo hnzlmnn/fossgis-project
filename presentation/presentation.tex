@@ -1,0 +1,126 @@
+\documentclass[aspectratio=169]{beamer}
+
+\usetheme[titleformat=allcaps,sectionpage=simple,progressbar=frametitle,background=dark]{metropolis}
+\RequirePackage{etoolbox}
+\RequirePackage{ifxetex}
+\RequirePackage{ifluatex}
+\RequirePackage{pgfopts}
+
+\usepackage{color}
+\definecolor{background}{HTML}{ffffff}
+\definecolor{text}{HTML}{333333}
+\definecolor{background}{HTML}{333333}
+\definecolor{text}{HTML}{ffffff}
+\definecolor{warning}{HTML}{f0ad4e}
+\definecolor{success}{HTML}{5cb85c}
+
+\setbeamercolor{progress bar}{fg=success,bg=background}
+\setbeamercolor{progress bar in section page}{fg=success,bg=background}
+\setbeamercolor{title separator}{fg=warning,bg=text}
+\setbeamercolor{normal text}{fg=text,bg=background}
+\setbeamercolor{frametitle}{fg=text,bg=warning}
+\setbeamercolor{section title}{fg=text,bg=warning}
+\setbeamercolor{palette primary}{bg=warning}
+
+\setbeamercolor{titlelike}{fg=text}
+\setbeamercolor{author}{fg=text}
+\setbeamercolor{date}{fg=text}
+\setbeamercolor{institute}{fg=text}
+
+%\usepackage{default}
+\usepackage{graphicx}
+\usepackage{amssymb}
+\usepackage{appendixnumberbeamer}
+
+\usepackage{pgfpages}
+%\setbeameroption{show notes on second screen}
+
+% Define block styles
+\tikzstyle{decision} = [diamond, color=background, fill=red!20, text width=5em, text badly centered]
+\tikzstyle{block} = [rectangle, color=background, fill=blue!20, text width=6em, text centered, rounded corners, minimum height=4em, text centered]
+\tikzstyle{cloud} = [ellipse, color=background, fill=green!20, minimum height=2em, text centered, text width=4em]
+
+\title{Interpolation}
+\subtitle{FOSSGIS Seminar}
+\date{Janurary 27, 2021}
+\author{Anja Doppelmayr \& Malte Heinzelmann}
+\institute{Ruprecht-Karls-Universit\"at Heidelberg}
+
+\makeatletter
+\def\beamer@framenotesbegin{% at beginning of slide
+	\usebeamercolor[fg]{normal text}
+	\gdef\beamer@noteitems{}%
+	\gdef\beamer@notes{}%
+}
+
+\setlength{\metropolis@titleseparator@linewidth}{2pt}
+\setlength{\metropolis@progressonsectionpage@linewidth}{2pt}
+\setlength{\metropolis@progressinheadfoot@linewidth}{2pt}
+
+\newlength\beamerleftmargin
+\setlength\beamerleftmargin{\Gm@lmargin}
+\makeatother
+
+\usepackage[export]{adjustbox} 
+
+\usepackage{tikz}
+\usetikzlibrary{arrows,positioning,shapes,arrows.meta}
+
+\usepackage[absolute,overlay]{textpos}
+\setlength{\TPHorizModule}{\paperwidth} % horizontal unit
+\setlength{\TPVertModule}{\paperheight} % vertical unit
+
+\newenvironment*{env}{}{}
+
+\begin{document}
+	\begin{frame}[plain]
+		\makebox[0pt][l]{%
+			\hspace*{-11mm}
+			%\hspace*{-\beamerleftmargin}
+			\raisebox{-\totalheight}[0pt][0pt]{%
+				\includegraphics[width=\paperwidth,keepaspectratio]{images/background}
+			}
+			\hspace*{-\paperwidth}
+			\hspace*{-11mm}
+			\raisebox{-\totalheight}[0pt][0pt]{%
+				\includegraphics[width=\paperwidth,height=\paperheight]{images/backdrop.png}
+			}
+		}
+		\begin{textblock}{1}[1,1](0.995,0.99)
+			\setlength\topsep{0pt}
+			\begin{flushright}
+				\tiny\color{background} Source: Pixabay (davidph, topography-station-measurement-202278)%
+			\end{flushright}
+		\end{textblock}
+		\titlepage
+	\end{frame}
+
+	\begin{frame}{Agenda}
+		\tableofcontents[]
+	\end{frame}
+
+	\include{content/introduction}
+	
+	\include{content/comparison}
+	
+	\include{content/results}
+	
+	\include{content/testing}
+	
+	\include{content/discussion}
+	
+	{
+		\metroset{sectionpage=none,numbering=none}
+		\section{Demo}
+		\begin{frame}[standout]
+			\begin{env}
+				\usebeamercolor[fg]{normal text}
+				\LARGE
+				DEMO
+			\end{env}
+		\end{frame}
+	}
+
+	\include{content/appendix}
+	
+\end{document}
