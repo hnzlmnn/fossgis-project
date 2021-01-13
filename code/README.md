@@ -2,8 +2,8 @@
 
 ## Requirements
 
-### DTM
-dgm200.utm32s.gridascii as GeoTiff in `data/dgm200.tif`
+### Background map
+`background.tiff` as `GeoTiff` that uses the bounding box defined in `util/clipping_boundary.geojson`. The provided `background.qgz` may be used.
 
 ## TODO
 

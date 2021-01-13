@@ -80,7 +80,7 @@ def calc_layer(key: str, year: int, month: int, day: int, hour: int, minute: int
     #     "A - (B / 100.0 * 0.65)",
     #     A=str(tmp_path.resolve()),
     #     A_band=1,
-    #     B="util/dgm200.tif",
+    #     B="util/dgm200.tiff",
     #     B_band=1,
     #     format="GTiff",
     #     outfile=str(dst_path.resolve()),
