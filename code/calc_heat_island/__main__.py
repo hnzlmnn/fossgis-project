@@ -1,14 +1,15 @@
 import os
 import argparse
 import geojson
+import calc_heat_island
 
 from pathlib import Path
 from datetime import datetime
-from calc_heat_island import main
+from calc_heat_island import main, QUALITIES
 from osgeo import gdal
 
 
-parser = argparse.ArgumentParser(prog="Heat Island Interpolation")
+parser = argparse.ArgumentParser(prog="Heat Island Interpolation", formatter_class=argparse.ArgumentDefaultsHelpFormatter)
 # subparsers = parser.add_subparsers(dest="action", required=True)
 
 # Subparsers
@@ -26,7 +27,12 @@ parser.add_argument("--year", type=int)
 parser.add_argument("--month", type=int)
 parser.add_argument("--day", type=int)
 parser.add_argument("--hour", type=int)
+parser.add_argument("--minute", type=int)
+parser.add_argument("--srs", default="EPSG:3395", help="Output srs of rendered images")
 parser.add_argument("--all", action='store_const', const=True, default=False)
+parser.add_argument("--quality", type=int, default=1, choices=list(range(len(QUALITIES))), help="Depending on the quality you choose, calculation will be faster/slower")
+parser.add_argument("--key", type=str, default="hot")
+parser.add_argument("--ffmpeg", type=str, default="ffmpeg")
 
 args = parser.parse_args()
 
@@ -53,8 +59,13 @@ args = parser.parse_args()
 #         yRes=args.resolution,
 #     )
 # elif args.action == "model":
-    
-main(args.year, args.month, args.day, args.hour, all=args.all)
+
+
+main(args.key, args.year, args.month, args.day, args.hour, args.minute, all=args.all, srs=args.srs, quality=args.quality, ffmpeg=args.ffmpeg)
+
+# calc_heat_island.data.os_extract(Path("opensense/2021-01-01/"))
+
+
 
 # for k, v in os.environ.items():
 #     print(k, v)

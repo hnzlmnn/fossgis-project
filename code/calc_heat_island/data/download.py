@@ -107,9 +107,9 @@ def init():
         print("done")
 
 def _add_fields(layer):
-    layer.CreateField(ogr.FieldDefn("ID", ogr.OFTString))
-    layer.CreateField(ogr.FieldDefn("Wet", ogr.OFTInteger))
+    layer.CreateField(ogr.FieldDefn("ID", ogr.OFTInteger))
     layer.CreateField(ogr.FieldDefn("Temp", ogr.OFTReal))
+    layer.CreateField(ogr.FieldDefn("Height", ogr.OFTInteger))
 
 
 def _vector_feature(layer, sid, measurement):
@@ -117,9 +117,9 @@ def _vector_feature(layer, sid, measurement):
     # TODO: Abort on missing
     feature = ogr.Feature(layer.GetLayerDefn())
     # Set the attributes using the values from the delimited text file
-    feature.SetField("ID", sid)
-    feature.SetField("Wet", measurement["RF_TU"])
+    feature.SetField("ID", int(sid))
     feature.SetField("Temp", normalize_temp(measurement["TT_TU"], station.height))
+    feature.SetField("Height", int(station.height))
     wkt = "POINT(%f %f %f)" %  (station.lon, station.lat, station.height)
     feature.SetGeometry(ogr.CreateGeometryFromWkt(wkt))
     return feature
@@ -163,9 +163,7 @@ def build_all():
     global DATES
     for year, month, day, hour in DATES.layers():
         path = layer_path(year, month, day, hour)
-        print(path)
         if path.exists():
-            print('exists')
             continue
         print(f"Building vector layer for {datetime(year, month, day, hour).strftime('%Y-%m-%d %H:00')}...", end="")
         try:

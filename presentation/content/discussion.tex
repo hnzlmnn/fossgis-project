@@ -3,4 +3,18 @@
 \section{Discussion}
 \begin{frame}{Discussion}
 	TODO
+	\scalebox{0.85}{
+		\begin{tikzpicture}[node distance = 2cm, auto, every node/.style={color=text, fill=background, font=\sffamily}, align=center]
+			% Place nodes
+			\node [block] (sat) {Satellite};
+			\node [decision, left=1.6cm of sat, yshift=-4cm] (base) {Basestation};
+			\node [decision, right=1.6cm of sat, yshift=-4cm] (drone) {Drone/\\Rover};
+			\node [cloud, above=1.6cm of base] (pos) {Known position};
+			% Draw edges
+			\draw [->] (sat) -- node[xshift=-2cm, text width=3cm] {gps data} (base);
+			\draw [->] (sat) -- node[xshift=-1.5cm, yshift=-0.6cm, text width=3cm] {gps data} (drone);
+			\draw [->] (base) -- node[yshift=-0.2cm, text width=3cm] {correction data} (drone);
+			\draw [->] (pos) -- (base);
+		\end{tikzpicture}
+	}
 \end{frame}
