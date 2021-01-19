@@ -8,9 +8,7 @@ COLORS = [
     (215, 25, 28), # Red
 ]
 
-def color_palette(a: np.ndarray, n=5):
-    i_min = np.min(a)
-    i_max = np.max(a)
+def color_palette(i_min: float, i_max: float, n=5):
     i_diff = float(i_max - i_min)
     i_step = i_diff / (n - 1)
     steps = []
@@ -34,8 +32,8 @@ def color_palette(a: np.ndarray, n=5):
         )
     return interpolate
 
-def colorize(src: np.ndarray, alpha=.6):
-    colors = color_palette(src)
+def colorize(src: np.ndarray, extrema: tuple, alpha=.6):
+    colors = color_palette(*extrema)
     r = np.empty(src.shape, 'uint8')
     g = np.empty(src.shape, 'uint8')
     b = np.empty(src.shape, 'uint8')

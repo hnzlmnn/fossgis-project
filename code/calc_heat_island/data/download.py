@@ -114,7 +114,6 @@ def _add_fields(layer):
 
 def _vector_feature(layer, sid, measurement):
     station = STATIONS.loc[sid]
-    # TODO: Abort on missing
     feature = ogr.Feature(layer.GetLayerDefn())
     # Set the attributes using the values from the delimited text file
     feature.SetField("ID", int(sid))

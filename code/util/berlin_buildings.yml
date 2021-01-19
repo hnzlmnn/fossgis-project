@@ -1,0 +1,20 @@
+planet_osm_polygon:
+  types:
+    - polygons
+  select:
+    - amenity
+    - landuse
+    - leisure
+    - name
+  where:
+    - landuse IS NOT NULL
+planet_osm_point:
+  types:
+    - points
+  select:
+    - amenity
+    - landuse
+    - leisure
+    - name
+  where:
+    - landuse IS NOT NULL

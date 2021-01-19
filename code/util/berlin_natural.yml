@@ -1,0 +1,17 @@
+planet_osm_polygon:
+  types:
+    - polygons
+  select:
+    - natural
+    - water
+    - waterway
+  where:
+    - natural='water'
+planet_osm_line:
+  types:
+    - lines
+  select:
+    - name
+    - waterway
+  where:
+    - 'waterway IN (''river'', ''canal'', ''stream'')'

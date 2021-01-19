@@ -1,7 +1,9 @@
 import geojson
 import gdal_calc
 import time
+import json
 import rasterio
+import numpy as np
 
 import calc_heat_island.data
 
@@ -14,7 +16,7 @@ from .util import QUALITIES
 from .frame import store_frame_txt, build_frame, build_animation
 
 
-def calc_layer(key: str, year: int, month: int, day: int, hour: int, minute: int, *, srs: str, power: float = 2.0, smoothing: float = 0.0, radius: float = 1.0, neighbors: int = 12, quality: int = 1, **kwargs):
+def calc_layer(key: str, year: int, month: int, day: int, hour: int, minute: int, *, power: float = 2.0, smoothing: float = 0.0, radius: float = 1.0, neighbors: int = 12, quality: int, **kwargs):
     if not (isinstance(year, int) and isinstance(month, int) and isinstance(day, int) and isinstance(hour, int)):
         raise ValueError("Invalid time!")
     when = datetime(year=year, month=month, day=day, hour=hour, minute=minute)
@@ -22,20 +24,9 @@ def calc_layer(key: str, year: int, month: int, day: int, hour: int, minute: int
     src_path = layer_path(when, key)
     if not src_path.exists():
         build_layer(key, when, path=src_path)
-    tmp_path = dst_path = layer_path(when, key, extra="temp", ext="tiff")
+    tmp_path = layer_path(when, key, extra="temp", ext="tiff")
     if tmp_path.exists():
         tmp_path.unlink()
-    color_path = dst_path = layer_path(when, key, extra="color", ext="tiff")
-    if color_path.exists():
-        color_path.unlink()
-    dst_path = layer_path(when, key, ext="tiff")
-    if dst_path.exists():
-        dst_path.unlink()
-    frame_path = layer_path(when, key, ext="png")
-    if frame_path.exists():
-        store_frame_txt(key, frame_path)
-        print("done", flush=True)
-        return
     result = gdal.Grid(
         str(tmp_path.resolve()),
         str(src_path.resolve()),
@@ -49,12 +40,59 @@ def calc_layer(key: str, year: int, month: int, day: int, hour: int, minute: int
     result = None
 
     img = rasterio.open(tmp_path)
+
+    ch = img.read(1)
+    extrema = (float(np.min(ch)), float(np.max(ch)))
+    extrema_file = tmp_path.parent / "extrema.json"
+    global_extrema = {}
+    if extrema_file.exists():
+        with open(extrema_file, "r") as fin:
+            global_extrema = json.load(fin)
+    global_extrema[when.strftime('%Y-%m-%d %H:%M')] = extrema
+    with open(extrema_file, "w+") as fout:
+        json.dump(global_extrema, fout)
+    print("done", flush=True)
+
+
+def process_layer(key: str, year: int, month: int, day: int, hour: int, minute: int, *, srs: str, quality: int, **kwargs):
+    if not (isinstance(year, int) and isinstance(month, int) and isinstance(day, int) and isinstance(hour, int)):
+        raise ValueError("Invalid time!")
+    when = datetime(year=year, month=month, day=day, hour=hour, minute=minute)
+    print(f"Processing image for {when.strftime('%Y-%m-%d %H:%M')}...", end="", flush=True)
+    tmp_path = layer_path(when, key, extra="temp", ext="tiff")
+    color_path = layer_path(when, key, extra="color", ext="tiff")
+    if color_path.exists():
+        color_path.unlink()
+    dst_path = layer_path(when, key, ext="tiff")
+    if dst_path.exists():
+        dst_path.unlink()
+    frame_path = layer_path(when, key, ext="png")
+    if frame_path.exists():
+        store_frame_txt(key, frame_path)
+        print("done", flush=True)
+        return
+    if not tmp_path.exists():
+        raise ValueError(f"The layer for {when.strftime('%Y-%m-%d %H:%M')} needs to be calculated first!")
+    
+    img = rasterio.open(tmp_path)
     meta = img.meta
     meta.update(dict(
         count=4,
         dtype='uint8',
     ))
-    r, g, b, a = colorize(img.read(1))
+    ch = img.read(1)
+
+    extrema_file = tmp_path.parent / "extrema.json"
+    global_extrema = {}
+    if extrema_file.exists():
+        with open(extrema_file, "r") as fin:
+            global_extrema = json.load(fin)
+    extrema = [255, -255]
+    for local_extrema in global_extrema.values():
+        extrema[0] = min(extrema[0], local_extrema[0])
+        extrema[1] = max(extrema[1], local_extrema[1])
+
+    r, g, b, a = colorize(ch, extrema)
     with rasterio.open(
         color_path,
         'w',
@@ -74,25 +112,7 @@ def calc_layer(key: str, year: int, month: int, day: int, hour: int, minute: int
     )
     result = None
 
-    build_frame(dst_path, when, frame_path, quality=quality)
-    store_frame_txt(key, frame_path)
-    # gdal_calc.Calc(
-    #     "A - (B / 100.0 * 0.65)",
-    #     A=str(tmp_path.resolve()),
-    #     A_band=1,
-    #     B="util/dgm200.tiff",
-    #     B_band=1,
-    #     format="GTiff",
-    #     outfile=str(dst_path.resolve()),
-    #     quiet=True)
-
-    # result = gdal.Translate(
-    #     str(frame_path.resolve()),
-    #     str(dst_path.resolve()),
-    #     outputSRS=srs,
-    #     format="PNG",
-    # )
-    # result = None
+    build_frame(dst_path, when, frame_path, extrema=extrema, quality=quality)
     print("done", flush=True)
 
 
@@ -101,10 +121,21 @@ def calc_hour(key: str, year: int, month: int, day: int, hour: int, **kwargs):
         calc_layer(key, year, month, day, hour, minute, **kwargs)
 
 
+def process_hour(key: str, year: int, month: int, day: int, hour: int, **kwargs):
+    for minute in DB.minutes(year, month, day, hour):
+        process_layer(key, year, month, day, hour, minute, **kwargs)
+
+
 def calc_day(key: str, year: int, month: int, day: int, **kwargs):
     for hour in DB.hours(year, month, day):
         calc_hour(key, year, month, day, hour, **kwargs)
+    process_day(key, year, month, day, **kwargs)
     build_animation(key, datetime(year=year, month=month, day=day), **kwargs)
+
+
+def process_day(key: str, year: int, month: int, day: int, **kwargs):
+    for hour in DB.hours(year, month, day):
+        process_hour(key, year, month, day, hour, **kwargs)
 
 
 def calc_month(key: str, year: int, month: int, **kwargs):
