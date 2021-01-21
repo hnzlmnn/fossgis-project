@@ -10,8 +10,8 @@ from .util import QUALITIES
 BACKGROUND = None
 SCALE = None
 
-def store_frame_txt(key: str, frame_path):
-    txt = frame_path.parent / f"{key}_frames.txt"
+def store_frame_txt(algo: str, key: str, frame_path):
+    txt = frame_path.parent / f"{key}_{algo}_frames.txt"
     frames = []
     try:
         with open(txt, "r") as fin:
@@ -32,24 +32,44 @@ def build_frame(src, when, dst, *, extrema, quality):
         BACKGROUND = Image.open("util/background.tiff").resize(QUALITIES[quality])
     if SCALE is None:
         SCALE = Image.open("util/scale.png")
-        SCALE = SCALE.resize((int(SCALE.size[0] * (quality + 1)), int(QUALITIES[quality][1] * 0.6)))
+        SCALE = SCALE.resize((SCALE.size[0], int(QUALITIES[quality][1] * .95)))
     frame = Image.alpha_composite(BACKGROUND, Image.open(src).resize(BACKGROUND.size))
-    scale_pos = (int(frame.size[0] * .96) - SCALE.size[0], int(((1 - (SCALE.size[1] / frame.size[1])) / 2) * frame.size[1]))
-    frame.paste(SCALE, scale_pos)
     fontSize = int(frame.size[1] * .034)
     font = ImageFont.truetype("util/segoeui.ttf", fontSize)
-    draw = ImageDraw.Draw(frame)
-    text = when.strftime("%Y-%m-%d %H:%M")
-    width, height = draw.textsize(text, font=font)
+    width, height = frame.size
     margin = fontSize // 4
-    draw.text((frame.size[0] - width - margin, frame.size[1] - height - margin), text, (0, 0, 0), font=font)
+    draw = ImageDraw.Draw(frame)
+    # Date
+    txt_date = when.strftime("%Y-%m-%d %H:%M")
+    w0, h0 = draw.textsize(txt_date, font=font)
+    # Min
     txt_min = str(round(extrema[0], 2)) + "°C "
-    width, height = draw.textsize(txt_min, font=font)
-    draw.text((scale_pos[0] - width, scale_pos[1] + ((1 - ((scale_pos[1] / frame.size[1]) * 2)) * frame.size[1]) - height), txt_min, (0, 0, 0), font=font)
+    w1, h1 = draw.textsize(txt_min, font=font)
+    # Max
     txt_max = str(round(extrema[1], 2)) + "°C "
-    width, height = draw.textsize(txt_max, font=font)
-    draw.text((scale_pos[0] - width, scale_pos[1]), txt_max, (0, 0, 0), font=font)
-    frame.save(dst)
+    w2, _ = draw.textsize(txt_max, font=font)
+    # Calculate new size
+    width += int(SCALE.size[0] + 3 * margin + max(w1, w2))
+    height += int(h0 + 2 * margin)
+    final = Image.new("RGB", (width, height), (255, 255, 255))
+    # Scale
+    scale_pos = (
+        int(width - margin - SCALE.size[0]),
+        int(((1 - (SCALE.size[1] / final.size[1])) / 2) * final.size[1]),
+    )
+    final.paste(frame, (0, final.size[1] - frame.size[1]))
+    final.paste(SCALE, scale_pos)
+    # Positions
+    date_pos = (int(width / 2 - w0 / 2), margin)
+    min_pos = (int(scale_pos[0] - w1 - margin), scale_pos[1] + SCALE.size[1] - h1)
+    max_pos = (int(scale_pos[0] - w2 - margin), scale_pos[1])
+    # Draw text
+    draw = ImageDraw.Draw(final)
+    draw.text(date_pos, txt_date, (0, 0, 0), font=font)
+    draw.text(min_pos, txt_min, (0, 0, 0), font=font)
+    draw.text(max_pos, txt_max, (0, 0, 0), font=font)
+
+    final.save(dst)
 
 def build_animation(key: str, when: datetime, *, ffmpeg, **kwargs):
     base = layer_path(when, key).parent

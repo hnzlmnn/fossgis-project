@@ -18,10 +18,10 @@ def _add_fields(layer):
     layer.CreateField(ogr.FieldDefn("Temp", ogr.OFTReal))
 
 
-def layer_path(when, key, *, extra="", ext="geojson"):
+def layer_path(when, key, *, algo: str = "", extra="", ext="geojson"):
     path = Path(f"./layers/{when.strftime('%Y')}/{when.strftime('%m')}/{when.strftime('%d')}/")
     path.mkdir(parents=True, exist_ok=True)
-    return path / f"{key}_{when.strftime('%Y-%m-%d_%H_%M')}{'_' + extra if extra != '' else ''}.{ext}"
+    return path / f"{key}_{when.strftime('%Y-%m-%d_%H_%M')}{'_' + algo if algo != '' else ''}{'_' + extra if extra != '' else ''}.{ext}"
 
 
 def build_layer(key, when: datetime, *, path=None):

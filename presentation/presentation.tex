@@ -30,6 +30,7 @@
 %\usepackage{default}
 \usepackage{graphicx}
 \usepackage{amssymb}
+\usepackage[ngerman,english]{babel}
 \usepackage{appendixnumberbeamer}
 
 \usepackage{pgfpages}
@@ -40,7 +41,7 @@
 \tikzstyle{block} = [rectangle, color=background, fill=blue!20, text width=6em, text centered, rounded corners, minimum height=4em, text centered]
 \tikzstyle{cloud} = [ellipse, color=background, fill=green!20, minimum height=2em, text centered, text width=4em]
 
-\title{Interpolation}
+\title{Interpolation - Heat island effect on the example of Berlin}
 \subtitle{FOSSGIS Seminar}
 \date{Janurary 27, 2021}
 \author{Anja Doppelmayr \& Malte Heinzelmann}
@@ -69,6 +70,14 @@
 \usepackage[absolute,overlay]{textpos}
 \setlength{\TPHorizModule}{\paperwidth} % horizontal unit
 \setlength{\TPVertModule}{\paperheight} % vertical unit
+
+\usepackage[
+backend=biber,
+style=alphabetic,
+citestyle=authoryear
+]{biblatex}
+
+\addbibresource{../writeup/biblatex.bib} %Imports bibliography file
 
 \newenvironment*{env}{}{}
 
@@ -99,6 +108,8 @@
 		\tableofcontents[]
 	\end{frame}
 
+	\include{content/initial}
+	
 	\include{content/introduction}
 	
 	\include{content/comparison}

@@ -1,1 +1,1 @@
-from .model import main, QUALITIES
+from .model import main, QUALITIES, ALGORITHMS

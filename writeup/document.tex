@@ -1,26 +1,45 @@
-\documentclass[a4paper,listof=totoc,toc=sectionentrywithdots]{scrartcl}
+\documentclass[a4paper,listof=totoc,toc=sectionentrywithdots,abstract=false]{scrartcl}
 \usepackage[affil-it]{authblk}
 
-\title{Interpolation}
-\subtitle{FOSSGIS Seminar}
+\usepackage{graphicx}
+\usepackage[ngerman,english]{babel}
+\usepackage{textcmds}
+
+\usepackage[
+backend=biber,
+style=numeric,
+citestyle=numeric,
+]{biblatex}
+
+\addbibresource{biblatex.bib} %Imports bibliography file
+\usepackage[colorlinks=false,hidelinks]{hyperref}
+
+%\titlefoot{\centering\includegraphics[width=6cm]{images/title}}
+\title{Interpolation - Heat island effect on the example of Berlin}
+\subtitle{FOSSGIS Seminar 2020}
 \date{\today}
 \author{Anja Doppelmayr \& Malte Heinzelmann}
 \affil{Ruprecht-Karls-Universit\"at Heidelberg}
-
 
 \begin{document}
 
 \maketitle
 
+%{\centering\includegraphics[width=6cm]{images/title}}
+
 \begin{abstract}
-	\include{content/abstract}
+	\setlength{\parindent}{0pt}
+	\input{content/abstract}
 \end{abstract}
-\pagebreak
 
-\tableofcontents
-\pagebreak
+%\pagebreak
+%\tableofcontents
+%\pagebreak
 
 
-\include{content/introduction}
+\input{content/introduction}
+
+\appendix
+\printbibliography
 
 \end{document}

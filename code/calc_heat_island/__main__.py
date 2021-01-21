@@ -5,7 +5,7 @@ import calc_heat_island
 
 from pathlib import Path
 from datetime import datetime
-from calc_heat_island import main, QUALITIES
+from calc_heat_island import main, QUALITIES, ALGORITHMS
 from osgeo import gdal
 
 
@@ -23,16 +23,17 @@ parser = argparse.ArgumentParser(prog="Heat Island Interpolation", formatter_cla
 # dtm_parser.add_argument("-f", "--force", default=False, const=True, action="store_const")
 
 # Model options
-parser.add_argument("--year", type=int)
-parser.add_argument("--month", type=int)
-parser.add_argument("--day", type=int)
-parser.add_argument("--hour", type=int)
-parser.add_argument("--minute", type=int)
+parser.add_argument("year", type=int, nargs="?", default=None)
+parser.add_argument("month", type=int, nargs="?", default=None)
+parser.add_argument("day", type=int, nargs="?", default=None)
+parser.add_argument("hour", type=int, nargs="?", default=None)
+parser.add_argument("minute", type=int, nargs="?", default=None)
 parser.add_argument("--srs", default="EPSG:3395", help="Output srs of rendered images")
 parser.add_argument("--all", action='store_const', const=True, default=False)
-parser.add_argument("--quality", type=int, default=1, choices=list(range(len(QUALITIES))), help="Depending on the quality you choose, calculation will be faster/slower")
+parser.add_argument("--quality", type=int, default=2, choices=list(range(len(QUALITIES))), help="Depending on the quality you choose, calculation will be faster/slower")
 parser.add_argument("--key", type=str, default="hot")
 parser.add_argument("--ffmpeg", type=str, default="ffmpeg")
+parser.add_argument("--algo", type=str, default=ALGORITHMS[0], choices=ALGORITHMS)
 
 args = parser.parse_args()
 
@@ -61,7 +62,7 @@ args = parser.parse_args()
 # elif args.action == "model":
 
 
-main(args.key, args.year, args.month, args.day, args.hour, args.minute, all=args.all, srs=args.srs, quality=args.quality, ffmpeg=args.ffmpeg)
+main(args.key, args.year, args.month, args.day, args.hour, args.minute, algo=args.algo, all=args.all, srs=args.srs, quality=args.quality, ffmpeg=args.ffmpeg)
 
 # calc_heat_island.data.os_extract(Path("opensense/2021-01-01/"))
 
