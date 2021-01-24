@@ -64,7 +64,7 @@ class Database:
         for time in measurements.keys():
             measurements[time] = {k: v for k, v in measurements[time].items() if k in stations}
             measurements[time] = self._filter_std(measurements[time])
-            # measurements[time] = filter_std(measurements[time])
+        stations = {k: v for k, v in stations.items() if self._full_data(measurements, k)}
         return stations, measurements
 
     def download_csv(self, when: datetime, src):
