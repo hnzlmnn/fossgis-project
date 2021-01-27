@@ -4,12 +4,33 @@
 \usepackage{graphicx}
 \usepackage[ngerman,english]{babel}
 \usepackage{textcmds}
+\usepackage{float}
+\usepackage{csquotes}
+\usepackage{tabularx}
+\usepackage{pifont}% http://ctan.org/pkg/pifont
+
+\newcommand{\cmark}{\ding{51}}%
+\newcommand{\xmark}{\ding{55}}%
 
 \usepackage[
 backend=biber,
-style=numeric,
-citestyle=numeric,
+%style=chicago-authordate,
+%citestyle=chicago-authordate,
+%style=numeric,
+%citestyle=numeric,
+%style=authoryear,
+%citestyle=authoryear,
+style=alphabetic,
+citestyle=alphabetic,
+maxnames=1,
+maxalphanames=1,
 ]{biblatex}
+
+\renewcommand*{\labelalphaothers}{}
+
+\DefineBibliographyStrings{english}{%
+	andothers = {\em et\addabbrvspace al\adddot}
+}
 
 \addbibresource{biblatex.bib} %Imports bibliography file
 \usepackage[colorlinks=false,hidelinks]{hyperref}
@@ -40,6 +61,8 @@ citestyle=numeric,
 
 \input{content/introduction}
 \input{content/methods}
+\input{content/results}
+\input{content/discussion}
 
 \pagebreak
 \appendix

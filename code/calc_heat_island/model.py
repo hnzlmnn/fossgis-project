@@ -19,6 +19,7 @@ from .frame import store_frame_txt, build_frame, build_animation
 ALGORITHMS = [
     "invdistnn",
     "linear",
+    "nearest",
 ]
 
 
@@ -57,7 +58,7 @@ def calc_layer(algo: str, key: str, year: int, month: int, day: int, hour: int, 
 
     ch = img.read(1)
     extrema = (float(np.min(ch)), float(np.max(ch)))
-    extrema_file = tmp_path.parent / "extrema.json"
+    extrema_file = tmp_path.parent / f"{key}_{algo}_extrema.json"
     global_extrema = {}
     if extrema_file.exists():
         with open(extrema_file, "r") as fin:
@@ -158,7 +159,7 @@ def calc_day(algo: str, key: str, year: int, month: int, day: int, **kwargs):
     for hour in DB.hours(year, month, day):
         calc_hour(algo, key, year, month, day, hour, **kwargs)
     process_day(algo, key, year, month, day, **kwargs)
-    build_animation(algo, key, datetime(year=year, month=month, day=day), **kwargs)
+    build_animation(key, datetime(year=year, month=month, day=day), **kwargs)
 
 
 def process_day(algo: str, key: str, year: int, month: int, day: int, **kwargs):

@@ -38,10 +38,10 @@
 
 % Define block styles
 \tikzstyle{decision} = [diamond, color=background, fill=red!20, text width=5em, text badly centered]
-\tikzstyle{block} = [rectangle, color=background, fill=blue!20, text width=6em, text centered, rounded corners, minimum height=4em, text centered]
+\tikzstyle{block} = [rectangle, color=background, fill=blue!20, text width=7em, text centered, rounded corners, minimum height=4em, text centered]
 \tikzstyle{cloud} = [ellipse, color=background, fill=green!20, minimum height=2em, text centered, text width=4em]
 
-\title{Interpolation - Heat island effect on the example of Berlin}
+\title{Interpolation - On the example of the intra-urban Heat island effect in Berlin}
 \subtitle{FOSSGIS Seminar}
 \date{Janurary 27, 2021}
 \author{Anja Doppelmayr \& Malte Heinzelmann}
@@ -74,7 +74,6 @@
 \usepackage[
 backend=biber,
 style=alphabetic,
-citestyle=authoryear
 ]{biblatex}
 
 \addbibresource{../writeup/biblatex.bib} %Imports bibliography file
@@ -90,7 +89,7 @@ citestyle=authoryear
 				\includegraphics[width=\paperwidth,keepaspectratio]{images/background}
 			}
 			\hspace*{-\paperwidth}
-			\hspace*{-11mm}
+			\hspace*{-5mm}
 			\raisebox{-\totalheight}[0pt][0pt]{%
 				\includegraphics[width=\paperwidth,height=\paperheight]{images/backdrop.png}
 			}
@@ -98,7 +97,7 @@ citestyle=authoryear
 		\begin{textblock}{1}[1,1](0.995,0.99)
 			\setlength\topsep{0pt}
 			\begin{flushright}
-				\tiny\color{background} Source: Pixabay (davidph, topography-station-measurement-202278)%
+				\tiny\color{text} Source: Pixabay (davidph, topography-station-measurement-202278)%
 			\end{flushright}
 		\end{textblock}
 		\titlepage
@@ -108,9 +107,9 @@ citestyle=authoryear
 		\tableofcontents[]
 	\end{frame}
 
-	\include{content/initial}
-	
 	\include{content/introduction}
+
+	\include{content/initial}
 	
 	\include{content/comparison}
 	
