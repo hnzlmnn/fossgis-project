@@ -28,6 +28,8 @@ def algo_config(algo: str, **kwargs):
         return f"invdistnn:power={kwargs['power']}:smoothing={kwargs['smoothing']}:radius={kwargs['radius']}:max_points={kwargs['neighbors']}:min_points=0"
     if algo == "linear":
         return f"linear:radius={kwargs['radius']}"
+    if algo == "nearest":
+        return f"nearest"
     raise ValueError("invalid algo selected: " + algo)
 
 

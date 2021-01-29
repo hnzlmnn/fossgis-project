@@ -6,6 +6,7 @@ from osgeo import gdal
 ALGORITHMS = {
     "invdistnn": "gdal",
     "linear": "gdal",
+    "nearest": "gdal",
     "spline": "TODO",
 }
 
@@ -34,6 +35,8 @@ if args.algo == "linear":
     conf = f"linear:radius={config['radius']}"
 elif args.algo == "invdistnn":
     conf = f"invdistnn:power={config['power']}:smoothing={config['smoothing']}:radius={config['radius']}:max_points={config['neighbors']}:min_points=0"
+elif args.algo == "invdistnn":
+    conf = f"nearest"
 elif args.algo == "spline":
     conf = ""
 

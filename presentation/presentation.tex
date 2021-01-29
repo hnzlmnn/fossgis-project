@@ -32,6 +32,9 @@
 \usepackage{amssymb}
 \usepackage[ngerman,english]{babel}
 \usepackage{appendixnumberbeamer}
+\usepackage{textcmds}
+\usepackage{float}
+\usepackage{csquotes}
 
 \usepackage{pgfpages}
 %\setbeameroption{show notes on second screen}
@@ -75,6 +78,11 @@
 backend=biber,
 style=alphabetic,
 ]{biblatex}
+\usepackage{tabularx}
+\usepackage{pifont}% http://ctan.org/pkg/pifont
+
+\newcommand{\cmark}{\ding{51}}%
+\newcommand{\xmark}{\ding{55}}%
 
 \addbibresource{../writeup/biblatex.bib} %Imports bibliography file
 
@@ -109,27 +117,25 @@ style=alphabetic,
 
 	\include{content/introduction}
 
-	\include{content/initial}
+	\include{content/interpolation}
 	
-	\include{content/comparison}
+	\include{content/project}
 	
 	\include{content/results}
 	
-	\include{content/testing}
+	\include{content/outlook}
 	
-	\include{content/discussion}
-	
-	{
-		\metroset{sectionpage=none,numbering=none}
-		\section{Demo}
-		\begin{frame}[standout]
-			\begin{env}
-				\usebeamercolor[fg]{normal text}
-				\LARGE
-				DEMO
-			\end{env}
-		\end{frame}
-	}
+%	{
+%		\metroset{sectionpage=none,numbering=none}
+%		\section{Demo}
+%		\begin{frame}[standout]
+%			\begin{env}
+%				\usebeamercolor[fg]{normal text}
+%				\LARGE
+%				DEMO
+%			\end{env}
+%		\end{frame}
+%	}
 
 	\include{content/appendix}
 	

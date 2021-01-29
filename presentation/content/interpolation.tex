@@ -1,0 +1,164 @@
+% !TeX root = ../presentation.tex
+
+\section{Interpolation}
+\begin{frame}{Interpolation methods overview}
+	\begin{columns}[c] % align columns
+		\begin{column}{.5\textwidth}
+			\centering
+			\includegraphics[trim=0 100 0 0,clip,height=.75\textheight]{../writeup/images/dem.png}\\
+			\textit{\footnotesize Interpolation with different methods \cite{mitas_spatial_1999}}
+		\end{column}%
+		\hfill%
+		\begin{column}{.5\textwidth}
+			\begin{itemize}
+				\item Nearest Neigbor (deterministic) <a>
+				\item Linear/TIN (deterministic) <b>
+				\item IDW (deterministic) <c>
+				\item Spline (deterministic) <e \& f>
+				\item Kriging (statistical) <d>
+			\end{itemize}
+		\end{column}%
+	\end{columns}\end{frame}
+\begin{frame}{Nearest Neighbor}
+	\begin{columns}[c] % align columns
+		\begin{column}{.52\textwidth}
+			\begin{itemize}
+				\item Voronoi diagrams
+				\item Value is exactly the value of its nearest neighbor
+				\item Sharp edges
+				\item Inaccurate if known points have a great distance
+			\end{itemize}
+		\end{column}%
+		\hfill%
+		\begin{column}{.48\textwidth}
+			\includegraphics[trim=0 0 294 0,clip,width=\linewidth]{../writeup/images/voronoi_delauny.png}\\
+			\textit{\footnotesize Voronoi diagram \cite{sambridge_geophysical_1995}}
+		\end{column}%
+	\end{columns}
+	\note{The basis for this method are so-called Voronoi diagrams. Thereby, „plans“ or polygons, which are produced according to the known point value they refer to. The values within these “planes” are then „filled“ with the same value of the corresponding nearest neighbor (aka. known point).}
+\end{frame}
+\begin{frame}{Linear/TIN}
+\begin{columns}[c] % align columns
+	\begin{column}{.48\textwidth}
+		\includegraphics[trim=292 0 0 0,clip,width=\linewidth]{../writeup/images/voronoi_delauny.png}\\
+		\textit{\footnotesize Delaunay triangulation \cite{sambridge_geophysical_1995}}
+	\end{column}%
+	\hfill%
+	\begin{column}{.52\textwidth}
+		\begin{itemize}
+			\item Delaunay triangulation
+			\item Surfaces formed by triangles
+			\item Sharp edges
+			\item Linear relationship
+			\item Not suitable for data points outside the convex hull of the known points
+		\end{itemize}
+		\note{The basis for this method are so-called Voronoi diagrams. Thereby, „plans“ or polygons, which are produced according to the known point value they refer to. The values within these “planes” are then „filled“ with the same value of the corresponding nearest neighbor (aka. known point).}
+	\end{column}%
+\end{columns}
+\end{frame}
+\begin{frame}{Inverse distance weighting}
+\begin{columns}[T] % align columns
+	\begin{column}{.52\textwidth}
+		\begin{itemize}
+			\item $N$ neighbors (within search radius)
+			\item Weighting according to neighbor's distance to interpolation point
+			\item Weighting function: $ w_{i}({\mathbf  {x}})={\frac  {1}{d({\mathbf  {x}},{\mathbf  {x}}_{i})^{p}}} $
+			\item Higher power values $\Rightarrow$ farther neighbors have less weight
+			\item Useful for dense and equally distributed data points
+			\item Not good for clustered or points following a trend
+		\end{itemize}
+	\end{column}%
+	\hfill%
+	\begin{column}{.48\textwidth}
+		\includegraphics[width=.8\linewidth]{../writeup/images/idw_power.png}\\
+		\textit{\footnotesize Source: ArcGIS Pro Help\\How inverse distance weighted interpolation works}
+	\end{column}%
+	\note{IDW is a method whereby the distance between a predicted point and a sample point is weighted.}
+	\note{The underlying assumption is that there is a linear relationship between the location of the point of interest and the distance to the sample points.}
+	\note{Sample points closest to the cell of interest are assumed to be more related to its value than those further away - flowingly, more weight is given to nearby points than to points in the distance}
+	\note{Power values range from 0-3+ with a default settings generally being 2.}
+	\note{A larger power value produces a more localized result - values further away from the cell have less impact on it's calculated value, values closer to the cell impact it values more.}
+	\note{A smaller power value produces a more averaged result where sample points further away from the cell have a greater impact on the cell's calculated value.}
+	\note{Larger power value = values further away have less impact}
+	\note{Lower power value = values further away have a greater impact -> overall more average result}
+\end{columns}
+\end{frame}
+\begin{frame}{Spline}
+\begin{columns}[T] % align columns
+	\begin{column}{.44\textwidth}
+		\includegraphics[width=.8\linewidth]{../writeup/images/spline.png}\\
+		\textit{\footnotesize Spline \ldq{}rubber sheet\rdq{} fit to known data points \cite{albrecht_spline_2005}}
+	\end{column}%
+	\hfill%
+	\begin{column}{.56\textwidth}
+		\begin{itemize}
+			\item Distortion through splines
+			\item Minimizes overall surface curvature
+			\item Creates a smooth continuous surface
+			\item Bad for dense points with relatively high value differences
+			\item Can estimate values outside of the measurement area
+		\end{itemize}
+	\end{column}%
+\end{columns}
+\end{frame}
+\begin{frame}{Kriging}
+\begin{columns}[T] % align columns
+	\begin{column}{.52\textwidth}
+		\begin{itemize}
+			\item Geo-statistical approach
+			\item Based on auto-correlation
+			\item Produces a prediction surface
+			\item Measure of certainty: error estimation and a confidence interval for every unknown point
+		\end{itemize}
+	\end{column}%
+	\hfill%
+	\begin{column}{.48\textwidth}
+		\includegraphics[width=\linewidth]{../writeup/images/kriging.png}\\
+		\textit{\footnotesize Kriging in two dimensions \cite{gitta_raumliche_2016}}
+	\end{column}%
+\end{columns}
+\end{frame}
+\begin{frame}{Comparison Quiz}
+\begin{minipage}{\textwidth}
+	\centering
+	\includegraphics[width=5.5cm,keepaspectratio]{../writeup/images/interpolation_idw.png}\\
+	\textit{\footnotesize
+		\only<1>{Method 1}
+		\only<2->{IDW}
+	}
+\end{minipage}
+\vspace{0.5cm}\\
+\begin{minipage}{0.5\textwidth}
+	\centering
+	% todo: NEAREST NEIGHBOR REDNERN
+	\includegraphics[width=5.5cm,keepaspectratio]{../writeup/images/interpolation_nearest.png}\\
+	\textit{\footnotesize
+		\only<1-2>{Method 2}
+		\only<3->{Nearest Neighbor}
+	}
+\end{minipage}%
+\begin{minipage}{0.5\textwidth}
+	\centering
+	\includegraphics[width=5.5cm,keepaspectratio]{../writeup/images/interpolation_TIN.png}\\
+	\textit{\footnotesize
+		\only<1-3>{Method 3}
+		\only<4->{TIN}
+	}
+\end{minipage}
+\end{frame}
+\begin{frame}{Support in FOSSGIS tools}
+\centering
+\begin{tabular}{c|c|c|c|c}
+	Interpolation method & QGIS & GRASS GIS & SAGA & GDAL\\
+	\hline
+	Nearest neighbor & \xmark &\cmark &\cmark & \cmark \\
+	\hline
+	TIN & \cmark &\cmark &\cmark & \cmark \\
+	\hline
+	IDW & \cmark &\cmark &\cmark & \cmark \\
+	\hline
+	Spline & \xmark &\cmark &\cmark & \xmark \\
+	\hline
+	Kriging & \xmark &\cmark &\cmark & \xmark \\
+\end{tabular}
+\end{frame}
