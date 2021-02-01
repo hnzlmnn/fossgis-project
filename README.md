@@ -4,4 +4,4 @@ This project was created for the FOSSGIS Seminar of Heidelberg University in win
 
 The code can be found in `code/` where its dependencies and instructions to run are described in a README.md.
 
-The presentation along the demonstration can be found in `presentation/`. The final write-up is in `writeup/`.
+The presentation along the [demonstration](https://github.com/hnzlmnn/fossgis-project/tree/master/presentation/demo) can be found in `presentation/`. The final write-up is in `writeup/`.
