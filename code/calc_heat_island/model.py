@@ -77,11 +77,7 @@ def process_layer(algo: str, key: str, year: int, month: int, day: int, hour: in
     when = datetime(year=year, month=month, day=day, hour=hour, minute=minute)
     tmp_path = layer_path(when, key, algo=algo, extra="temp", ext="tiff")
     color_path = layer_path(when, key, algo=algo, extra="color", ext="tiff")
-    if color_path.exists():
-        color_path.unlink()
     dst_path = layer_path(when, key, algo=algo, ext="tiff")
-    if dst_path.exists():
-        dst_path.unlink()
     frame_path = layer_path(when, key, algo=algo, ext="png")
     if frame_path.exists():
         store_frame_txt(algo, key, frame_path)
@@ -91,44 +87,46 @@ def process_layer(algo: str, key: str, year: int, month: int, day: int, hour: in
         raise ValueError(f"The layer for {when.strftime('%Y-%m-%d %H:%M')} needs to be calculated first!")
     
     img = rasterio.open(tmp_path)
-    meta = img.meta
-    meta.update(dict(
-        count=4,
-        dtype='uint8',
-    ))
-    ch = img.read(1)
+    if not color_path.exists():
+        meta = img.meta
+        meta.update(dict(
+            count=4,
+            dtype='uint8',
+        ))
+        ch = img.read(1)
+        extrema_file = tmp_path.parent / f"{key}_{algo}_extrema.json"
+        global_extrema = {}
+        if extrema_file.exists():
+            with open(extrema_file, "r") as fin:
+                global_extrema = json.load(fin)
+        extrema = [255, -255]
+        for local_extrema in global_extrema.values():
+            extrema[0] = min(extrema[0], local_extrema[0])
+            extrema[1] = max(extrema[1], local_extrema[1])
 
-    extrema_file = tmp_path.parent / f"{key}_{algo}_extrema.json"
-    global_extrema = {}
-    if extrema_file.exists():
-        with open(extrema_file, "r") as fin:
-            global_extrema = json.load(fin)
-    extrema = [255, -255]
-    for local_extrema in global_extrema.values():
-        extrema[0] = min(extrema[0], local_extrema[0])
-        extrema[1] = max(extrema[1], local_extrema[1])
+        r, g, b, a = colorize(ch, extrema)
+        with rasterio.open(
+            color_path,
+            'w',
+            **meta,
+        ) as dst:
+            dst.write(r, 1)
+            dst.write(g, 2)
+            dst.write(b, 3)
+            dst.write(a, 4)
 
-    r, g, b, a = colorize(ch, extrema)
-    with rasterio.open(
-        color_path,
-        'w',
-        **meta,
-    ) as dst:
-        dst.write(r, 1)
-        dst.write(g, 2)
-        dst.write(b, 3)
-        dst.write(a, 4)
-
-    result = gdal.Warp(
-        str(dst_path.resolve()),
-        str(color_path.resolve()),
-        dstSRS=srs,
-        cropToCutline=True,
-        cutlineDSName="util/berlin.geojson",
-    )
-    result = None
+    if not dst_path.exists():
+        result = gdal.Warp(
+            str(dst_path.resolve()),
+            str(color_path.resolve()),
+            dstSRS=srs,
+            cropToCutline=True,
+            cutlineDSName="util/berlin.geojson",
+        )
+        result = None
 
     build_frame(dst_path, when, frame_path, extrema=extrema, quality=quality)
+    store_frame_txt(algo, key, frame_path)
     print("done", flush=True)
 
 
