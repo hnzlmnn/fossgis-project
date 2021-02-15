@@ -1,4 +1,6 @@
 # FOSSGIS Seminar WS20/21 Interpolation Demo
+## Setup
+The program requires Python3 with the GDAL module available.
 ## Instructions
 Use `demo.py --help` to list available options.
 ### Windows
