@@ -2,9 +2,11 @@
 
 \section{Results}
 
-Within this section we will present the differences in the results of the aforementioned interpolation methods and different implementations. 
+Within this section we will present the differences in the results of the aforementioned interpolation methods and different implementations. For reference figure \ref{fig:result_berlin} shows all stations used in the following images, their respective temperature on the 9th August 2020at 12:00 and the surface class according to OpenStreetMap data.
 
-\begin{figure}
+The results will be analyzed by visual differences and overall level of accuracy towards the research question. First, we are going to take a look at the visual differences and compare the resulting images of the different interpolation methods, as well as the results of the same methods calculated with the help of different FOSSGIS implementations.
+
+\begin{figure}[H]
 	\includegraphics[width=\linewidth]{comparison/berlin.png}
 	\caption{Surface types and sensor locations in research area}
 	\label{fig:result_berlin}
@@ -12,39 +14,41 @@ Within this section we will present the differences in the results of the aforem
 
 \subsection{Nearest neighbor}
 
-The nearest neighbor interpolation (figure \ref{fig:result_nearest}) can easily be identified through sharp edges. The IUHI effect cannot be seen very clearly.
+The method \ldq{}nearest neighbor\rdq{} is displayed by smaller regions (cells) with sharp edges  (see figure \ref{fig:result_nearest}). Its distinctive visual characteristics do no give sophisticated information about the temperature distribution within the city of Berlin. The geometric shapes of the regions only give a general idea of where the heat islands are, but it does not allow a detailed analysis of the effect nor give a precise location/center of the heat.
 
 \begin{figure}
-	\includegraphics[width=\linewidth]{images/interpolation_nearest.png}
-	\caption{Nearest neighbor interpolation using GDAL}
-	\label{fig:result_nearest}
+	\centering
+	\subfloat[\centering Nearest neighbor interpolation using GDAL\label{fig:result_nearest}]{{\includegraphics[width=.48\linewidth]{images/interpolation_nearest.png} }}
+	\hfill
+	\subfloat[\centering TIN interpolation using GDAL\label{fig:result_linear}]{{\includegraphics[width=.48\linewidth]{images/interpolation_tin.png} }}
+	\caption{Nearest neighbor and TIN interpolation using GDAL in comparison}
+	\label{fig:result_nearest_linear}
 \end{figure}
+
 
 \subsection{TIN interpolation}
 
-Figure \ref{fig:result_linear} shows the TIN interpolation as easily identified by the 
+Figure \ref{fig:result_linear} shows the TIN interpolation. Hereby visible is the characteristic surface made of triangles and the sharp edges. Due to visual examination the underlying calculation based on the relationship with the nodes of the triangles are apparent. The IUHI is not sufficiently depicted and is not very detailed and therefore does not provide enough information. The fact that TIN interpolation was used to create the image can easily be seen due to the visible convex hull.
+
+
+\subsection{IDW interpolation}
+
+For IDW we used different FOSSGIS tools to calculate the interpolation using the same configurations. Although the prominent points are fairly similar, differences can be seen in more sparsely covered areas.
 
 \begin{figure}
-	\includegraphics[width=\linewidth]{images/interpolation_tin.png}
-	\caption{TIN interpolation using GDAL}
-	\label{fig:result_linear}
+	\centering
+	\subfloat[\centering IDW interpolation using GDAL\label{fig:result_idw_gdal}]{{\includegraphics[width=.48\linewidth]{comparison/compare_idw_gdal.png} }}
+	\hfill
+	\subfloat[\centering IDW interpolation using GRASS GIS\label{fig:result_idw_grass}]{{\includegraphics[width=.48\linewidth]{comparison/compare_idw_grass.png} }}
+	\caption[Comparison of IDW interpolation between GDAL and GRASS GIS]{Comparison of IDW interpolation between GDAL and GRASS GIS, both using 12 max neighbors and a power factor of 2}
+	\label{fig:result_idw_gdal_grass}
 \end{figure}
 
+\subsection{B-Spline interpolation}
 
-\begin{figure}
-	\includegraphics[width=\linewidth]{comparison/compare_idw_gdal.png}
-	\caption{IDW interpolation using GDAL (12 max neighbors, power factor 2)}
-	\label{fig:result_idw_gdal}
-\end{figure}
-
-\begin{figure}
-	\includegraphics[width=\linewidth]{comparison/compare_idw_grass.png}
-	\caption{IDW interpolation using GRASS GIS (12 max neighbors, power factor 2)}
-	\label{fig:result_idw_grass}
-\end{figure}
-
-\begin{figure}
-	\includegraphics[width=\linewidth]{comparison/compare_bspline_saga.png}
-	\caption{BSpline interpolation using GRASS GIS}
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=.7\linewidth]{comparison/compare_bspline_saga.png}
+	\caption{B-Spline interpolation using SAGA GIS}
 	\label{fig:result_bspline}
 \end{figure}

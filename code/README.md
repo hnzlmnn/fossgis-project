@@ -10,7 +10,7 @@ TODO
 ### Background map
 `background.tiff` as `GeoTiff` that uses the bounding box defined in `util/clipping_boundary.geojson`. The provided `background.qgz` may be used.
 
-The configurations for the GeoPackages loaded by `background.qgz` for the HOTOSM Export Tool are provided as yaml files in `utils/`.
+The OpenStreetMap data required by `background.qgz` can be obtaind at [Geofabrik](http://download.geofabrik.de/europe/germany/berlin-latest-free.shp.zip)
 
 ## TODO
 

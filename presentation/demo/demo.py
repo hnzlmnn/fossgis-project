@@ -7,7 +7,6 @@ ALGORITHMS = {
     "invdistnn": "gdal",
     "linear": "gdal",
     "nearest": "gdal",
-    "spline": "TODO",
 }
 
 config = dict(

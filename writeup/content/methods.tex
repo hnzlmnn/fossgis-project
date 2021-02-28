@@ -89,7 +89,7 @@ Kriging is a geostatistical approach with many variations. It is a complex inter
 
 Kriging, and other geostatistical approaches, have the capability of producing a prediction surface, and they can also provide some measure of certainty or accuracy of the predicted values. \cite{samanta_interpolation_2012} As (global) Kriging can exceed the known value range (not bound by minima and maxima), but does not pass through any of the sample points, the method is one of the best for all climate variables except maximum temperature. \cite{gis_resources_choosing_2013}
 
-Even with a small number of sample points, Kriging will result in more accurate estimates than IDW. \cite{lam_spatial_2009} The advantage of this particular method is, as already mentioned, that it “[...] delivers a measure of confidence of how likely that prediction will be true” with an error estimation and a confidence interval for every unknown point. \cite{lam_spatial_2009} According to studies evaluated by \citeauthor{hofstra_comparison_2008}, (universal) Kriging is best suitable for interpolating mean precipitation and temperature, as well as daily climate variables. 
+Even with a small number of sample points, Kriging will result in more accurate estimates than IDW. \cite{lam_spatial_2009} The advantage of this particular method is, as already mentioned, that it \ldq{}[...] delivers a measure of confidence of how likely that prediction will be true\rdq{} with an error estimation and a confidence interval for every unknown point. \cite{lam_spatial_2009} According to studies evaluated by \citeauthor{hofstra_comparison_2008}, (universal) Kriging is best suitable for interpolating mean precipitation and temperature, as well as daily climate variables. 
 
 \subsubsection{Spline}
 
@@ -109,7 +109,7 @@ In comparison to TIN \& IDW, spline can also estimate data values outside the ra
 
 Table \ref{tab:fossgis_support} gives an overview over the (native) support for the mentioned interpolation methods in different FOSSGIS Tools.
 
-\begin{table}[H!]
+\begin{table}[H]
 	\centering
 	\begin{tabular}{c|c|c|c|c}
 		Interpolation method & QGIS & GRASS GIS & SAGA & GDAL\\
@@ -124,7 +124,8 @@ Table \ref{tab:fossgis_support} gives an overview over the (native) support for 
 		\hline
 		Kriging & \xmark &\cmark &\cmark & \xmark \\
 	\end{tabular}
-	\caption{\label{tab:fossgis_support}FOSSGIS interpolation support}
+	\caption{FOSSGIS interpolation support}
+	\label{tab:fossgis_support}
 \end{table}
 
 
