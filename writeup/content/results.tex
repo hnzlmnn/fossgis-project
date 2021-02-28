@@ -33,7 +33,7 @@ Figure \ref{fig:result_linear} shows the TIN interpolation. Hereby visible is th
 
 \subsection{IDW interpolation}
 
-For IDW we used different FOSSGIS tools to calculate the interpolation using the same configurations. Although the prominent points are fairly similar, differences can be seen in more sparsely covered areas.
+For the IDW interpolation, GDAL and GRASS GIS were used in order to be able to compare the results. Visually, IDW is recognizable by the \ldq{}Bull Eyes\rdq{}-effect. These are concentric areas of equal values, which ​can be seen around the known points or stations. Compared to th nearest neighbor and TIN interpolation methods, IDW gives a much more detailed output and allows for distinctive analysis of the temperature distribution. Both results calculated with GDAL and GRASS give similar results as shown in figure \ref{fig:result_idw_gdal_grass}. Although the prominent points are fairly similar, differences can be seen in more sparsely covered areas.
 
 \begin{figure}
 	\centering
@@ -45,6 +45,8 @@ For IDW we used different FOSSGIS tools to calculate the interpolation using the
 \end{figure}
 
 \subsection{B-Spline interpolation}
+
+As SAGA GIS also offers the possibility to interpolate point data, we conducted a B-Spline approximation. SAGA was identified as being one of the least accurate methods as illustrated by \citeauthor{wenjing_cao_study_2009}. As argued before, data points, which are not evenly distributed and have large value differences could pose a problem for spline interpolation. The result seems to have been \ldq{}smoothed\rdq{} out heavily and thus display a very homogeneous data surface. Figure \ref{fig:result_bspline} show that temperature distributions have farther reaching impact (compare lower left corner as well as the rightmost station with IDW). The smoothness can be seen on multiple clusters where the IDW interpolation creates islands that aren't interconnected and have more fringed edges.
 
 \begin{figure}[H]
 	\centering
