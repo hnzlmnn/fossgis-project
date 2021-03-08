@@ -2,7 +2,7 @@
 
 \section{Results}
 
-Within this section we will present the differences in the results of the aforementioned interpolation methods and different implementations. For reference figure \ref{fig:result_berlin} shows all stations used in the following images, their respective temperature on the 9th August 2020at 12:00 and the surface class according to OpenStreetMap data.
+Within this section we will present the differences in the results of the aforementioned interpolation methods and different implementations. For reference, figure \ref{fig:result_berlin} shows all stations used in the following images, their respective temperature on the 9th August 2020 at 12:00 and the surface class according to OpenStreetMap data.
 
 The results will be analyzed by visual differences and overall level of accuracy towards the research question. First, we are going to take a look at the visual differences and compare the resulting images of the different interpolation methods, as well as the results of the same methods calculated with the help of different FOSSGIS implementations.
 
@@ -14,7 +14,7 @@ The results will be analyzed by visual differences and overall level of accuracy
 
 \subsection{Nearest neighbor}
 
-The method \ldq{}nearest neighbor\rdq{} is displayed by smaller regions (cells) with sharp edges  (see figure \ref{fig:result_nearest}). Its distinctive visual characteristics do no give sophisticated information about the temperature distribution within the city of Berlin. The geometric shapes of the regions only give a general idea of where the heat islands are, but it does not allow a detailed analysis of the effect nor give a precise location/center of the heat.
+The method \ldq{}Nearest neighbor\rdq{} is displayed by smaller regions (cells) with sharp edges  (see figure \ref{fig:result_nearest}). Its distinctive visual characteristics do not give sophisticated information about the temperature distribution within the city of Berlin. The geometric shapes of the regions only give a general idea of where the heat islands are, but it does not allow a detailed analysis of the effect nor does provide a precise location/center of the occurring heat.
 
 \begin{figure}
 	\centering
@@ -28,12 +28,12 @@ The method \ldq{}nearest neighbor\rdq{} is displayed by smaller regions (cells) 
 
 \subsection{TIN interpolation}
 
-Figure \ref{fig:result_linear} shows the TIN interpolation. Hereby visible is the characteristic surface made of triangles and the sharp edges. Due to visual examination the underlying calculation based on the relationship with the nodes of the triangles are apparent. The IUHI is not sufficiently depicted and is not very detailed and therefore does not provide enough information. The fact that TIN interpolation was used to create the image can easily be seen due to the visible convex hull.
+Figure \ref{fig:result_linear} shows the results of the TIN interpolation. Hereby visible is the characteristic surface made of triangles and the sharp edges. The fact that TIN interpolation was used to create the image can easily be seen due to the visible convex hull. Due to visual examination the underlying calculation based on the relationship with the nodes of the triangles are apparent. The IUHI is not sufficiently depicted and is not very detailed and, therefore, does not provide enough information.
 
 
 \subsection{IDW interpolation}
 
-For the IDW interpolation, GDAL and GRASS GIS were used in order to be able to compare the results. Visually, IDW is recognizable by the \ldq{}Bull Eyes\rdq{}-effect. These are concentric areas of equal values, which ​can be seen around the known points or stations. Compared to th nearest neighbor and TIN interpolation methods, IDW gives a much more detailed output and allows for distinctive analysis of the temperature distribution. Both results calculated with GDAL and GRASS give similar results as shown in figure \ref{fig:result_idw_gdal_grass}. Although the prominent points are fairly similar, differences can be seen in more sparsely covered areas.
+For the IDW interpolation, GDAL and GRASS GIS were used in order to be able to compare the results. Visually, IDW is recognizable by the \ldq{}Bull Eyes\rdq{}-effect. These are concentric areas of equal values, which can be seen around the known points or stations. Compared to the Nearest neighbor and TIN interpolation methods, IDW gives a much more detailed output and allows for distinctive analysis of the temperature distribution. Both, the calculation with GDAL and GRASS, give similar results as shown in figure \ref{fig:result_idw_gdal_grass}. Although the prominent points are fairly similar, differences can be seen in more sparsely covered areas.
 
 \begin{figure}
 	\centering
@@ -46,7 +46,7 @@ For the IDW interpolation, GDAL and GRASS GIS were used in order to be able to c
 
 \subsection{B-Spline interpolation}
 
-As SAGA GIS also offers the possibility to interpolate point data, we conducted a B-Spline approximation. SAGA was identified as being one of the least accurate methods as illustrated by \citeauthor{wenjing_cao_study_2009}. As argued before, data points, which are not evenly distributed and have large value differences could pose a problem for spline interpolation. The result seems to have been \ldq{}smoothed\rdq{} out heavily and thus display a very homogeneous data surface. Figure \ref{fig:result_bspline} show that temperature distributions have farther reaching impact (compare lower left corner as well as the rightmost station with IDW). The smoothness can be seen on multiple clusters where the IDW interpolation creates islands that aren't interconnected and have more fringed edges.
+As SAGA GIS also offers the possibility to interpolate point data, we conducted a B-Spline approximation. SAGA was identified as being one of the least accurate methods as illustrated by \citeauthor{wenjing_cao_study_2009}. As argued before, data points, which are not evenly distributed and have large value differences could pose a problem for Spline interpolation. The result seems to have been \ldq{}smoothed\rdq{} out heavily and thus display a very homogeneous data surface. Figure \ref{fig:result_bspline} shows that temperature distributions have a farther reaching impact (compare lower left corner as well as the rightmost station with IDW). The smoothness can be seen on multiple clusters where, in contrast, the IDW interpolation creates islands that aren't interconnected and the IDW results show more fringed edges.
 
 \begin{figure}[H]
 	\centering
