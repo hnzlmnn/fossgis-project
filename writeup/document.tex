@@ -10,6 +10,15 @@
 \usepackage{subfig}
 \usepackage{pifont}% http://ctan.org/pkg/pifont
 
+
+\usepackage{xcolor}
+\definecolor{background}{HTML}{ffffff}
+\definecolor{text}{HTML}{333333}
+\definecolor{background}{HTML}{333333}
+\definecolor{text}{HTML}{ffffff}
+\definecolor{warning}{HTML}{f0ad4e}
+\definecolor{success}{HTML}{5cb85c}
+
 \newcommand{\cmark}{\ding{51}}%
 \newcommand{\xmark}{\ding{55}}%
 
@@ -40,9 +49,17 @@ maxalphanames=1,
 \title{Interpolation - Intra-Urban Heat island effect on the example of Berlin}
 \subtitle{FOSSGIS Seminar 2020}
 \date{\today}
-\author{Anja Doppelmayr \& Malte Heinzelmann}
+\author{Anja Doppelmayr (3673519) \& Malte Heinzelmann (3293437)}
 \affil{Ruprecht-Karls-Universit\"at Heidelberg}
 \graphicspath{images/}
+
+\usepackage{tikz}
+\usetikzlibrary{arrows,positioning,shapes,arrows.meta}
+
+% Define block styles
+\tikzstyle{decision} = [diamond, color=background, fill=red!20, text width=5em, text badly centered]
+\tikzstyle{block} = [rectangle, color=background, fill=blue!20, text width=7em, text centered, rounded corners, minimum height=4em, text centered]
+\tikzstyle{cloud} = [ellipse, color=background, fill=green!20, minimum height=2em, text centered, text width=4em]
 
 \begin{document}
 
@@ -62,6 +79,7 @@ maxalphanames=1,
 \input{content/methods}
 \input{content/results}
 \input{content/discussion}
+\input{content/conclusion}
 
 \pagebreak
 \appendix

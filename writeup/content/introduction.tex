@@ -15,16 +15,12 @@ The fundamental aim of our study is to analyze temperature data in order to be a
 
 Fostering measures such as cool and reflective pavements, green spaces and air circulation systems \cite{mohajerani_urban_2017} can be supported by preparing material, which helps to identify areas of increased heat stress and evaluated where countermeasures need to be implemented.
 
-% TODO: is this really surface temperature or air?
-Our approach, therefore, includes the comparison of changes in surface/air temperature over the course of the warmest day in 2019 (25.7.) and 2020 (9.8.) in Berlin. The study area is defined by Germany’s capital city Berlin. This site was chosen due to the availability of various data points and measurements in regard to our main source of data: openSenseMap (see section \ref{sec:data}). Furthermore, we hope to find a more significant intra-urban heat islands effect, as compared to other areas in Germany, merely because of the size and a relatively high degree of sealed surfaces. \cite{gdv_munchen_2018} Although the effect should be identifiable in similar urban areas, the comparison of different interpolation methods stands in the focus of this project, which is why we decided to use a more self-evident study site. Thus, the result of the comparison of the different methods below should point towards one overall method, which is best-suitable for answering questions in relation to the IUHI effect. 
+Our approach, therefore, includes the comparison of changes in air temperature over the course of the warmest day in 2019 (25.7.) and 2020 (9.8.) in Berlin. The study area is defined by Germany’s capital city Berlin. This site was chosen due to the availability of various data points and measurements in regard to our main source of data: openSenseMap (see section \ref{sec:data}). Furthermore, we hope to find a more significant intra-urban heat islands effect, as compared to other areas in Germany, merely because of the size and a relatively high degree of sealed surfaces. \cite{gdv_munchen_2018} Although the effect should be identifiable in similar urban areas, the comparison of different interpolation methods stands in the focus of this project, which is why we decided to use a more self-evident study site. Thus, the result of the comparison of the different methods below should point towards one overall method, which is best-suitable for answering questions in relation to the IUHI effect. 
 
 \subsection{Data: Selection and preparation (workflow)}
 \label{sec:data}
 
-Typically, the UHI effect is measured by the temperature difference between a city and its surrounding area.\cite{us_epa_learn_2014} In a study from 2012, the authors used land use/land cover, soil texture, and a digital elevation model as independent variables for interpolating and predicting temperature data in an area with a limited number of stations.\cite{samanta_interpolation_2012} As our study site did show various stations where temperature was measured on a regular basis, we were able to use this data directly and were hence not dependent on predicting point data based on independent variables. While our data did not demand for a series of different factors, but accurate and \ldq{}clean\rdq{} temperature data, the main preparation work was dedicated to extracting useful data, averaging the temperatures and selecting relevant sensor types (discussed below). Consequently, our temperature data is limited by the ultimate measurements of the different stations, their reliability and accuracy, which can be influenced by immediate surroundings or technical failure (as discussed in section
-%todo: ref section limitation
-% ToDo: Possibly move some of the limitations to the Discussion chapter
-. Thus, if we would bring different variables, like elevation, solar radiation, wind speed and direction, distance to natural (vegetated and water) and artificial surfaces etc. into play, then the results and statements could be more accurate. With respect to time and thematic priority, this would, however, be outside the scope of this project.
+Typically, the UHI effect is measured by the temperature difference between a city and its surrounding area.\cite{us_epa_learn_2014} In a study from 2012, the authors used land use/land cover, soil texture, and a digital elevation model as independent variables for interpolating and predicting temperature data in an area with a limited number of stations.\cite{samanta_interpolation_2012} As our study site did show various stations where temperature was measured on a regular basis, we were able to use this data directly and were hence not dependent on predicting point data based on independent variables. While our data did not demand for a series of different factors, but accurate and \ldq{}clean\rdq{} temperature data, the main preparation work was dedicated to extracting useful data, averaging the temperatures and selecting relevant sensor types (discussed below). Consequently, our temperature data is limited by the ultimate measurements of the different stations, their reliability and accuracy, which can be influenced by immediate surroundings or technical failure (also discussed in section \ref{sec:discussion}). Thus, if we would bring different variables, like elevation, solar radiation, wind speed and direction, distance to natural (vegetated and water) and artificial surfaces etc. into play, then the results and statements could be more accurate. With respect to time and thematic priority, this would, however, be outside the scope of this project.
 
 Due to the fact, that openSenseMap is a citizen science project, not all stations will provide data of equal quality. The question, if temperature data derived from openSenseMap alone is representative for visualizing IUHI, is also a question of selecting a specific time-frame. Our central goal is to use the methods of interpolation to show local temperature variations and - after further analysis - be able to identify areas with higher concentrations of heat stress. The end product is aimed at generating an animation of these results. Based on these objectives and the fact that an analysis of temperature variability over a longer period of time would require large amounts of data, we decided to focus on the daily variation of the IUHI for the two selected days within the last two years, as mentioned before.
 
@@ -35,9 +31,27 @@ Furthermore, the sensor descriptions posed a problem as the type of measurement 
 The final product used for further analysis consisted of a collection of stations and their aggregated measurements for each day.
 
 
-
-% TODO: Maybe more?
-
-% ToDo: Add final workflow chart
+\begin{figure}[b!]
+	\centering
+	\scalebox{0.85}{
+		\begin{tikzpicture}[node distance = 2cm, auto, every node/.style={color=text, fill=background, font=\sffamily}, align=center]
+			% Place nodes
+			\node [block] (in) {openSenseMap};
+			\node [cloud, right=1.6cm of in, text width=7em] (avg) {Average\\into 10 minute intervals};
+			\node [cloud, right=1.6cm of avg, text width=8em] (filter) {Filter\\by std deviation};
+			\node [decision, below=1.6cm of filter] (interpolate) {Interpolate};
+			\node [cloud, left=1.6cm of interpolate, text width=8em] (colorize) {Colorize\\1-band Tiff $\Rightarrow$ 4-band RGBA Tiff};
+			\node [block, below=2.3cm of in] (out) {Generate frame};
+			% Draw edges
+			\draw [->] (in) -- (avg);
+			\draw [->] (avg) -- (filter);
+			\draw [->] (filter) -- (interpolate);
+			\draw [->] (interpolate) -- (colorize);
+			\draw [->] (colorize) -- (out);
+		\end{tikzpicture}
+	}
+	\caption{Project workflow overview}
+	\label{fig:workflow}
+\end{figure}
 
 

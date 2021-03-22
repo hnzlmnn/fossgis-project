@@ -4,12 +4,6 @@
 
 The following chapter describes interpolation in general with regard to the most frequently used methods. We will give an introduction to the background of each method, their suitability, advantages and disadvantages as well as examples of application in other studies. Furthermore, we present possibilities of carrying out interpolation analysis and an overview of which methods are supported by a variety of FOSSGIS tools.
 
-
-\subsection{Statistical and Deterministic methods?}
-
-A deterministic method always generates the exact same output for a given input. Thus, leading to reproducible results, whereas a statistical method might not generate the same results.
-% TODO: Should we keep this? -> Move down to line 41?
-
 \subsection{What is spatial interpolation?}
 
 Spatial interpolation is the calculation of nearby and unknown values on the basis of neighboring known values \cite{gitta_raumliche_2016}. Interpolation methods are often used for analyzing spatial and spatio-temporal distributions of physical but also socioeconomic phenomena. These phenomena can be approximated by certain functions, which are location dependent within space \cite{mitas_spatial_1999}. Interpolation is thus very useful for estimating or predicting missing geographic point data, such as elevation, rainfall, chemical concentrations, noise levels etc. \cite{samanta_interpolation_2012}. Calculating these unknown values is done via a series of different methods, where the methods themselves depend on the research question and the data present. In this study we will be focusing on temperature data and give a short overview of similar studies and their choice of method(s).
@@ -58,7 +52,7 @@ We have, therefore, decided to focus on the four methods: TIN, IDW, Kriging and 
 
 \subsubsection{TIN}
 
-TIN stands for \ldq{}Triangulated Irregular Network\rdq{}. Hereby, scattered points are linked into a set of triangles, based on so-called \ldq{}Voronoi diagrams\rdq{} (which are the basis for Nearest Neighbor interpolation). Voronoi diagrams split up a plane into smaller regions, called cells, based on a set of known points (see figure \ref{fig:voronoi_delauny}(a)). In order to derive the geometric construction for TIN, which is called “Delaunay Triangulation” \cite{sambridge_geophysical_1995}, neighbors within cells that share a common boundary are connected. This is done through the creation of circumcircles of always three known points, which then form a valid triangle. The three nodes, or nearest neighbours, are then taken for the interpolation of each value within an identified triangle, based on their linear relationship \cite{lam_spatial_2009}. Thus, Delauny Triangulations, which are supported by the linear interpolation algorithm of the GDAL tool, form a surface of non-overlapping triangles \ref{fig:voronoi_delauny}(b)). 
+TIN stands for \ldq{}Triangulated Irregular Network\rdq{}. Hereby, scattered points are linked into a set of triangles, based on so-called \ldq{}Voronoi diagrams\rdq{} (which are the basis for Nearest Neighbor interpolation). Voronoi diagrams split up a plane into smaller regions, called cells, based on a set of known points (see figure \ref{fig:voronoi_delauny}(a)). In order to derive the geometric construction for TIN, which is called \ldq{}Delaunay Triangulation\rdq{} \cite{sambridge_geophysical_1995}, neighbors within cells that share a common boundary are connected. This is done through the creation of circumcircles of always three known points, which then form a valid triangle. The three nodes, or nearest neighbours, are then taken for the interpolation of each value within an identified triangle, based on their linear relationship \cite{lam_spatial_2009}. Thus, Delauny Triangulations, which are supported by the linear interpolation algorithm of the GDAL tool, form a surface of non-overlapping triangles \ref{fig:voronoi_delauny}(b)). 
 
 
 \begin{figure}
